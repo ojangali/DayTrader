@@ -1,0 +1,71 @@
+doctype html
+html(lang='en', ng-app='day-trader')
+  head
+    meta(charset='utf-8')
+    meta(http-equiv='X-UA-Compatible', content='IE=edge')
+    meta(name='viewport', content='width=device-width, initial-scale=1')
+    title Day Trader
+    link(rel='stylesheet', href='//maxcdn.bootstrapcdn.com/bootswatch/3.3.4/superhero/bootstrap.min.css')
+    link(rel='stylesheet', href='/vendor/font-awesome/css/font-awesome.min.css')
+    link(rel='stylesheet', href=isProd ? '/index.min.css' : '/index.css')
+    link(rel='shortcut icon', href='/favicon.ico')
+  body(ng-controller='master')
+    .container-fluid
+      .row
+        .col-xs-12
+          h1 Day Trader
+          .col-xs-8
+            button.btn.btn-info.btn-sm(ng-click='showUserForm()') New Investor
+            h2 {{user.name}}: {{user.amount | currency}}
+      .row(ng-show='showUserFormShowing')
+        h3 User Info
+        .col-xs-4
+          label.control-label(for='inputSuccess') Name
+            input(ng-model='user.name')
+        .col-xs-4
+          label.control-label(for='inputSuccess') Amount
+            input(ng-model='user.amount')
+        .col-xs-4
+          button.btn.btn-success.btn-sm(ng-click='saveInfo()') Enter
+      .row
+        h3 Trade Floor
+        .col-xs-3
+          label.control-label(for='inputSuccess') Stock Symbol
+            input(type='text', ng-model='symbol')
+        .col-xs-3
+          label.control-label(for='select') Pick Portfolio
+            select#select.form-control(ng-model='stock.portfolio')
+              option Energy
+              option Technology
+              option Healthcare
+              option Finance
+        .col-xs-3
+          label.control-label(for='inputSuccess') Number of Shares
+            input(type='number', ng-model='stock.num')
+        .col-xs-3
+          .form-group.has-success
+          button.btn.btn-danger.btn-sm(ng-click='purchase()') Purchase
+      .row
+        .col-xs-12
+          table.table.table-striped
+            thead
+              tr
+                th Energy
+                th Technology
+                th Healthcare
+                th Finance
+                th Sell
+            tbody
+              tr(ng-repeat='stock in stocks track by $index')
+                td {{stock.energy}}
+                td {{stock.technology}}
+                td {{stock.healthcare}}
+                td {{stock.finance}}
+                td: button.btn.btn-danger.btn-xs(ng-click='sellStock($index)') Sell
+    script(src='/vendor/jquery/dist/jquery.min.js')
+    script(src='/vendor/bootstrap/dist/js/bootstrap.min.js')
+    script(src='/vendor/lodash/lodash.min.js')
+    script(src='/vendor/firebase/firebase.js')
+    script(src='/vendor/angular/angular.min.js')
+    script(src='/vendor/angularfire/dist/angularfire.min.js')
+    script(src=isProd ? '/index.min.js' : '/index.js')
